@@ -41,7 +41,7 @@ else if (savedCities.length >= 4) {
 }
 
 function uvIndex(lon, lat) {
-    var queryURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
+    var queryURL = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
 
     $.ajax({
         url: queryURL,
@@ -94,7 +94,7 @@ function searchForecast(city) {
         for (let i = 0; i < 5; i++) {
             console.log(response.list[i]);
             let temp = ((response.list[i].main.temp-273.15)*1.8) + 32;
-            weatherDiv.append(`<div class="col-md-2 col-12 forecast" style="margin-top:20px"> 
+            weatherDiv.append(`<div class="col-md-2 col-sm-6 col-12 forecast" style="margin-top:20px"> 
             <div class="card"><div class="card-body">
             <h5 class="card-title">${moment().add(i+1, 'days').format('L')}</h5>
             <p class="card-text">Temperature: ${temp.toFixed(2)} </br>
