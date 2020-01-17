@@ -94,7 +94,7 @@ function searchForecast(city) {
         for (let i = 0; i < 5; i++) {
             console.log(response.list[i]);
             let temp = ((response.list[i].main.temp-273.15)*1.8) + 32;
-            weatherDiv.append(`<div class="col-2 xs-col-12 sm-col-12 forecast" style="margin-top:20px"> 
+            weatherDiv.append(`<div class="col-2 col-xs-12 forecast" style="margin-top:20px"> 
             <div class="card"><div class="card-body">
             <h5 class="card-title">${moment().add(i+1, 'days').format('L')}</h5>
             <p class="card-text">Temperature: ${temp.toFixed(2)} </br>
