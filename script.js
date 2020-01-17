@@ -21,7 +21,7 @@ function populateSaved() {
       searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i]} </button>`)
   }
 } 
-else if (savedCities.length > 4) {
+else if (savedCities.length >= 4) {
     for (let i=0; i < 4; i++) {
         searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i]} </button>`)
     }
