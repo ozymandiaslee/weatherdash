@@ -55,6 +55,9 @@ function uvIndex(lon, lat) {
 //initiatilize the previous searched div
 function init() {
     populateSaved();
+    renderInitialDiv(savedCities[0]);
+    searchCurrent(savedCities[0]);
+    searchForecast(savedCities[0]);
 }
 
 //AJAX call to populate our card body with JSON data for current city conditions
