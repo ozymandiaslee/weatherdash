@@ -4,6 +4,8 @@ const forecastdisplayDiv = $('#forecast-card');
 const weatherDiv = $('#weather-display');
 let savedCities = [];
 
+//set our local savedCities array to our storedCities in localStorage and use them to populate the last 4 searches made with an event handler that
+//will rerun our render/search functions
 function populateSaved() {
 
     var storedCities = JSON.parse(localStorage.getItem("savedCities"));
@@ -28,7 +30,7 @@ function populateSaved() {
     searchForecast(city);
 });
 
-
+//function to make a uvIndex ajax call passing in our longitude and latitude from our searchCurrent JSON object
 }
 
 function uvIndex(lon, lat) {
@@ -43,10 +45,12 @@ function uvIndex(lon, lat) {
     });
 }
 
+//initiatilize the previous searched div
 function init() {
     populateSaved();
 }
 
+//AJAX call to populate our card body with JSON data for current city conditions
 function searchCurrent(city) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + apiKey;
     $.ajax({
@@ -69,6 +73,8 @@ function searchCurrent(city) {
     });
 };
 
+
+//AJAX call to populate our weather div with 5 cards using a for loop to show our 5 day forecast
 function searchForecast(city) {
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&APPID=" + apiKey;
     $.ajax({
@@ -91,6 +97,8 @@ function searchForecast(city) {
     });
 }
 
+//render our initial card-body with our searched City Name as a header
+
 function renderInitialDiv(city) {
     weatherdisplayDiv.append(
         `
@@ -101,6 +109,8 @@ function renderInitialDiv(city) {
             </div>
         `)
 }
+
+//event handler that stores the city name and runs our search functions with our input value
 
 $("#search").on("click", function (event) {
     // Preventing the button from trying to submit the form
