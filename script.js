@@ -14,7 +14,7 @@ function populateSaved() {
   }
   var searchList = $('.previous-search');
   searchList.empty();
-  for (let i=0; i < savedCities.length; i++) {
+  for (let i=0; i < 4; i++) {
       searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i]} </button>`)
   }
   $(".city-button").on("click", function (event) {
@@ -22,13 +22,25 @@ function populateSaved() {
     event.preventDefault();
     weatherdisplayDiv.empty();
     $('.forecast').remove();
-    var city = $(this).text();
+    var city = $(this).text().trim();
     renderInitialDiv(city);
     searchCurrent(city);
     searchForecast(city);
 });
 
 
+}
+
+function uvIndex(lon, lat) {
+    var queryURL = `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        var uvDiv = $("#uv");
+        uvDiv.text(`UV Index: ${response.value}`);
+    });
 }
 
 function init() {
@@ -43,13 +55,17 @@ function searchCurrent(city) {
     }).then(function (response) {
         console.log(response);
         var cardDiv = $('.card-body');
-        let temp = ((response.main.temp-273.15)*1.8)+32
+        let temp = ((response.main.temp-273.15)*1.8)+32;
+        var lon = response.coord.lon;
+        var lat = response.coord.lat;
         cardDiv.append(`<p class="card-text">Temperature: ${temp.toFixed(2)}</br>
                         Humidity: ${response.main.humidity}% </br>
-                        Wind Speed: ${response.wind.speed} MPH
+                        Wind Speed: ${response.wind.speed} MPH </br>
                         </p>
+                        <p id="uv"></p>
                         <img src="http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png"></img>
                         `);
+        uvIndex(lon,lat);
     });
 };
 
@@ -93,7 +109,7 @@ $("#search").on("click", function (event) {
     $('.forecast').remove();
     // Storing the city name
     var city = $("#city-input").val().trim();
-    savedCities.push(city);
+    savedCities.unshift(city);
     localStorage.setItem("savedCities", JSON.stringify(savedCities));
     renderInitialDiv(city);
     searchCurrent(city);
