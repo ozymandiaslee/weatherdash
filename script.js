@@ -136,6 +136,7 @@ $("#search").on("click", function (event) {
     searchCurrent(city);
     searchForecast(city);
     populateSaved();
+    $("#city-input").val('');
     };
 });
 
