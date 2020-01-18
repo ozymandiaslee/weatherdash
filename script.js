@@ -129,12 +129,14 @@ $("#search").on("click", function (event) {
     $('.forecast').remove();
     // Storing the city name
     var city = $("#city-input").val().trim();
+    if (city !== "") {
     savedCities.unshift(city);
     localStorage.setItem("savedCities", JSON.stringify(savedCities));
     renderInitialDiv(city);
     searchCurrent(city);
     searchForecast(city);
     populateSaved();
+    };
 });
 
 
