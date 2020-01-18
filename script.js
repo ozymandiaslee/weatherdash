@@ -9,35 +9,35 @@ let savedCities = [];
 function populateSaved() {
 
     var storedCities = JSON.parse(localStorage.getItem("savedCities"));
-    
-  if (storedCities !== null) {
-    savedCities = storedCities;
-    console.log(savedCities);
-  }
-  var searchList = $('.previous-search');
-  searchList.empty();
-  if (savedCities.length < 4) {
-  for (let i=0; i < savedCities.length; i++) {
-      searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i].charAt(0).toUpperCase() + savedCities[i].toLowerCase().substring(1)} </button>`)
-  }
-} 
-else if (savedCities.length >= 4) {
-    for (let i=0; i < 4; i++) {
-        searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i].charAt(0).toUpperCase() + savedCities[i].toLowerCase().substring(1)} </button>`)
-    }
-}
-  $(".city-button").on("click", function (event) {
-    // Preventing the button from trying to submit the form
-    event.preventDefault();
-    weatherdisplayDiv.empty();
-    $('.forecast').remove();
-    var city = $(this).text().trim();
-    renderInitialDiv(city);
-    searchCurrent(city);
-    searchForecast(city);
-});
 
-//function to make a uvIndex ajax call passing in our longitude and latitude from our searchCurrent JSON object
+    if (storedCities !== null) {
+        savedCities = storedCities;
+        console.log(savedCities);
+    }
+    var searchList = $('.previous-search');
+    searchList.empty();
+    if (savedCities.length < 4) {
+        for (let i = 0; i < savedCities.length; i++) {
+            searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i].charAt(0).toUpperCase() + savedCities[i].toLowerCase().substring(1)} </button>`)
+        }
+    }
+    else if (savedCities.length >= 4) {
+        for (let i = 0; i < 4; i++) {
+            searchList.append(`<button type="button" class="list-group-item list-group-item-action city-button"> ${savedCities[i].charAt(0).toUpperCase() + savedCities[i].toLowerCase().substring(1)} </button>`)
+        }
+    }
+    $(".city-button").on("click", function (event) {
+        // Preventing the button from trying to submit the form
+        event.preventDefault();
+        weatherdisplayDiv.empty();
+        $('.forecast').remove();
+        var city = $(this).text().trim();
+        renderInitialDiv(city);
+        searchCurrent(city);
+        searchForecast(city);
+    });
+
+    //function to make a uvIndex ajax call passing in our longitude and latitude from our searchCurrent JSON object
 }
 
 function uvIndex(lon, lat) {
@@ -69,7 +69,7 @@ function searchCurrent(city) {
     }).then(function (response) {
         console.log(response);
         var cardDiv = $('.card-body');
-        let temp = ((response.main.temp-273.15)*1.8)+32;
+        let temp = ((response.main.temp - 273.15) * 1.8) + 32;
         var lon = response.coord.lon;
         var lat = response.coord.lat;
         cardDiv.append(`<p class="card-text">Temperature: ${temp.toFixed(2)}</br>
@@ -79,7 +79,7 @@ function searchCurrent(city) {
                         <p id="uv"></p>
                         <img src="http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png"></img>
                         `);
-        uvIndex(lon,lat);
+        uvIndex(lon, lat);
     });
 };
 
@@ -93,10 +93,10 @@ function searchForecast(city) {
     }).then(function (response) {
         for (let i = 0; i < 5; i++) {
             console.log(response.list[i]);
-            let temp = ((response.list[i].main.temp-273.15)*1.8) + 32;
+            let temp = ((response.list[i].main.temp - 273.15) * 1.8) + 32;
             weatherDiv.append(`<div class="col-md-2 col-sm-6 col-12 forecast" style="margin-top:20px"> 
             <div class="card"><div class="card-body">
-            <h5 class="card-title">${moment().add(i+1, 'days').format('L')}</h5>
+            <h5 class="card-title">${moment().add(i + 1, 'days').format('L')}</h5>
             <p class="card-text">Temperature: ${temp.toFixed(2)} </br>
                                 Humidity: ${response.list[i].main.humidity}% </p>
                                 <img src="http://openweathermap.org/img/wn/${response.list[i].weather[0].icon}@2x.png"></img>
@@ -130,15 +130,20 @@ $("#search").on("click", function (event) {
     // Storing the city name
     var city = $("#city-input").val().trim();
     if (city !== "") {
-    savedCities.unshift(city);
-    localStorage.setItem("savedCities", JSON.stringify(savedCities));
-    renderInitialDiv(city);
-    searchCurrent(city);
-    searchForecast(city);
-    populateSaved();
-    $("#city-input").val('');
+        savedCities.unshift(city);
+        localStorage.setItem("savedCities", JSON.stringify(savedCities));
+        renderInitialDiv(city);
+        searchCurrent(city);
+        searchForecast(city);
+        populateSaved();
+        $("#city-input").val('');
     };
 });
+
+$('#city-input').keypress(function (e) {
+    if (e.which == 13) {
+        $('#search').click(); }
+    });
 
 
 init();
