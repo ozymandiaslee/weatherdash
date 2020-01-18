@@ -142,6 +142,7 @@ $("#search").on("click", function (event) {
 
 $('#city-input').keypress(function (e) {
     if (e.which == 13) {
+        e.preventDefault();
         $('#search').click(); }
     });
 
